@@ -139,4 +139,9 @@ body {
 .reveal .slide-number {
   color: #f23818; }
 
+footer {
+  bottom: 25px;
+  left: 10px;
+  position: relative; }
+
 /*# sourceMappingURL=ember.css.map */
