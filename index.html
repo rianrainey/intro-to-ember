@@ -50,61 +50,302 @@
                 <a href="http://twitter.com/rianrainey">Twitter</a>
               </p>
             </small>
+            <img src="/assets/images/ember_mascot.png" alt="ToDo MVC" />
           </p>
-        </section>
 
-        <section data-markdown>
-          <script type="text/template">
-            ## Background
-          </script>
-          <section>
-          </section>
+          <aside class="notes">
+            <ul>
+              <li>Centresource</li>
+              <li>Types of technology we use for the solutions we build</li>
+              <li>Clients want a great user experience that feels native</li>
+            </ul>
+
+            <ul>
+              <li>SPAs</li>
+            </ul>
+          </aside>
         </section>
 
         <section>
           <h2>What is Ember?</h2>
-        </section>
 
-        <section data-markdown>
-          <script type="text/template">
-            ## Markdown support
+          <ul>
+            <li class="fragment">Javascript Web Application Framework based on MVC</li>
+            <li class="fragment">2007</li>
+            <li class="fragment">Favors Convention Over Configuration</li>
+          </ul>
 
-            For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
+          <aside class="notes">
+            <ul>
+              <ul>
+                <li>Convention over Configuration</li>
+                <li>Smarter people incorporating best way to do this</li>
+                <li>Easier to find resources/tutorials</li>
+                <li>Handlebars</li>
+                <li>Ember Data</li>
+                <li>Testing</li>
+              </ul>
+            </ul>
 
-            ```
-            <section data-markdown>
-              ## Markdown support
-
-              For those of you who like that sort of thing.
-              Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-            </section>
-            ```
-          </script>
+           </aside>
         </section>
 
         <section>
-          <h2>Pretty Code</h2>
-          <pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+          <h2>Why Should I Care?</h2>
 
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-          </code></pre>
+          <aside class="notes">
+            <ul>
+              <li>This is where the web is going - more 'native'.</li>
+              <li>Mobile First</li>
+              <li>Can wrap in Cordova and make a mobile app and ship it to the store</li>
+            </ul>
+          </aside>
         </section>
+
+        <section>
+          <img src="/assets/images/spas.png" alt="ToDo MVC" />
+        </section>
+
+        <section>
+          <h2>ToDoMVC.com</h2>
+          <img src="/assets/images/todomvc.png" alt="ToDo MVC" />
+        </section>
+
+        <section>
+          <section>
+            <h2>Ember Terms</h2>
+            <div>
+              <ul>
+                <li>Router</li>
+                <li>Template</li>
+                <li>View</li>
+                <li>Model</li>
+                <li>Controller</li>
+                <li>Components</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Router</h2>
+            <pre>
+            <code>
+      App = Ember.Application.create();
+
+      App.Router.map(function() {
+        this.resource('post', { path: '/post/:post_id' });
+      })
+            </code>
+            </pre>
+
+            <aside class="notes">
+              <ul>
+                <li>Queries the model and makes it available to controller/templates</li>
+                <li>Defines that URL</li>
+              </ul>
+            </aside>
+          </section>
+
+
+          <section>
+            <h2>Template</h2>
+            <pre>
+              <code>
+      <h2>{{title}}</h2>
+
+      {{body}}
+             </code>
+            </pre>
+
+            <aside class="notes">
+              <ul>
+                <li>File that displays content to user (HTML/Handlebars)</li>
+                <li>Where you put almost all the presentation code</li>
+                <li>There will be no logic in here</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Views</h2>
+            <pre>
+              <code>
+      App.PostView = Ember.View.extend({
+        classNames: ['post-view']
+      });
+      // Could have omitted and Ember would have automagically created it.
+             </code>
+            </pre>
+
+            <aside class="notes">
+              <ul>
+                <li>Won't be putting much logic in here. </li>
+                <li>Additionall CSS classes that are relevant</li>
+                <li>Should be thin and devoid of logic</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Model</h2>
+            <pre>
+              <code>
+      App.Post = DS.Model.extend({
+        title: DS.attr('string'),
+        body: DS.attr('string')
+      });
+             </code>
+            </pre>
+
+            <aside class="notes">
+              <ul>
+                <li>Define model</li>
+                <li>Use Ember Data as your ORM to interact with persitant state of model</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Controller</h2>
+            <pre>
+              <code>
+      App.PostController = Ember.ObjectController.extend({
+        length: function() {
+          return this.get('model.body.length');
+        }.property('model.body')
+
+        actions: {
+          removePost: function() {
+            var post = this.get('model');
+            post.deleteRecord();
+            post.save();
+          }
+        }
+      });
+      // If we never use length or removePost, we could drop this controller
+             </code>
+            </pre>
+
+            <aside class="notes">
+              <ul>
+                <li>Controllers are more like decorators in Ember</li>
+                <li>You will have properties that don't need to be persisted.</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Components</h2>
+            <pre>
+      <code class="fragment">
+        {{blog-intro}} // good
+        {{intro}} // bad
+      </code>
+
+      <code class="fragment">
+        // Template
+        <script type="text/x-handlebars">
+          {{blog-intro}}
+        </script>
+
+        // Component
+        <script type="text/x-handlebars" id="components/blog-intro">
+          This is my introduction
+        </script>
+
+        // Output
+        This is my introduction
+      </code>
+            </pre>
+          </section>
+
+          <section>
+            <h2>Demo</h2>
+            github.com/rianrainey/simple-ember-posts
+
+            <aside class="notes">
+              <ul>
+                <li>gco start => Start: 1-way binding</li>
+                <li>gco fixtures => Fixtures: Static data</li>
+                <li>gco htmlbars => Htmlbars: Cleaner markup</li>
+                <li>gco local-storage => Local Storage</li>
+                <li>gco delete-posts => Delete</li>
+              </ul>
+            </aside>
+          </section>
+
+        </section>
+
+
+        <section>
+          <section>
+            <h2>Ember CLI</h2>
+            <p>Ember command line utility that provides spin-up, testing, asset-compilation and more for Ember.</p>
+
+      <pre><code class="fragment">
+        npm install -g ember-cli
+        ember new my-new-app
+        cd my-new-app
+        ember server
+      </code></pre>
+
+            <aside class="notes">
+              - Broccoli: Asset management
+              - Bower: Dependency Management
+              - Test
+              - Server
+              - Add-Ons
+              - Blueprints: snippets generators for model/view/controller. Shareable
+            </aside>
+
+          </section>
+
+          <section>
+            <h2>Ember Inspector</h2>
+            Firefox and Chrome extension.
+
+            <aside class="notes">
+              See what controller/model/view/template is rendered
+              See records loaded from Ember Data
+            </aside>
+          </section>
+
+          <section>
+            <h2>Ember Testing</h2>
+            <p>Ember uses QUnit as it's default testing framework.</p>
+
+            <pre><code class="fragment">
+      ember test            # will run your test-suite in your current shell once
+      ember test --server   # will run your tests on every file-change
+
+      test("Page contents", function() {
+        expect(2);
+        visit('/foos').then(function() {
+          equal(find('.foos-list').length, 1, "Page contains list of models");
+          equal(find('.foos-list .foo-item').length, 5, "List contains expected number of models");
+        });
+      });
+            </code></pre>
+
+          </section>
+        </section>
+
+        <section>
+          <h2>Final Thoughts</h2>
+
+          <aside class="notes">
+            <ul>
+              <li>Pick up at least 1 SPA/MV* Framework</li>
+              <li>ToDoMVC.com</li>
+              <li>Any recommendations for others trying to decipher which framework to choose?</li>
+            </ul>
+          </aside>
+        </section>
+
 
         <section>
           <h1>Thank You</h1>
-          <h3>Rian Rainey | rian.me</h3>
+          <h3>Rian Rainey | @rianrainey</h3>
         </section>
 
       </div>
@@ -112,7 +353,7 @@ function linkify( selector ) {
     </div>
 
     <footer>
-      Rian Rainey | @rianrainey | rian.me
+      Rian Rainey | @rianrainey
     </footer>
 
     <script src="lib/js/head.min.js"></script>
